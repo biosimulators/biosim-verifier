@@ -43,8 +43,8 @@ class BiosimServiceMock(BiosimService):
             id=sim_id,
             name=omex_name,
             simulator=simulator_spec.simulator,
-            simulator_version=simulator_spec.version or "1.0",
-            simulator_digest="sha256:5d1595553608436a2a343f8ab7e650798ef5ba5dab007b9fe31cd342bf18ec81",
+            simulatorVersion=simulator_spec.version or "1.0",
+            simulatorDigest="sha256:5d1595553608436a2a343f8ab7e650798ef5ba5dab007b9fe31cd342bf18ec81",
             status=BiosimSimulationRunStatus.RUNNING
         )
         self.sim_runs[sim_id] = sim_run

@@ -1,7 +1,5 @@
-import json
 import logging
 import os
-from dataclasses import asdict
 from pathlib import Path
 from typing import AsyncGenerator
 
@@ -32,8 +30,8 @@ class BiosimServiceRest(BiosimService):
             id=res["id"],
             name=res["name"],
             simulator=res['simulator'],
-            simulator_version=res['simulatorVersion'],
-            simulator_digest=res['simulatorDigest'],
+            simulatorVersion=res['simulatorVersion'],
+            simulatorDigest=res['simulatorDigest'],
             status=BiosimSimulationRunStatus(res['status'])
         )
 
@@ -59,7 +57,7 @@ class BiosimServiceRest(BiosimService):
             with Path(local_omex_path).open('rb') as f:
                 data = FormData()
                 data.add_field(name='file', value=f, filename='omex.omex', content_type='multipart/form-data')
-                data.add_field(name='simulationRun', value=json.dumps(asdict(simulation_run_request)),
+                data.add_field(name='simulationRun', value=simulation_run_request.model_dump_json(),
                                content_type='multipart/form-data')
 
                 async with session.post(url=api_base_url + '/runs', data=data) as resp:
@@ -73,8 +71,8 @@ class BiosimServiceRest(BiosimService):
             id=res["id"],
             name=res["name"],
             simulator=res['simulator'],
-            simulator_version=res['simulatorVersion'],
-            simulator_digest=res['simulatorDigest'],
+            simulatorVersion=res['simulatorVersion'],
+            simulatorDigest=res['simulatorDigest'],
             status=BiosimSimulationRunStatus(res['status'])
         )
 

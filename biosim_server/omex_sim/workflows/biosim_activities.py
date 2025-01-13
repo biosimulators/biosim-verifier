@@ -1,19 +1,18 @@
 import logging
 import os
-from dataclasses import dataclass
 
+from pydantic import BaseModel
 from temporalio import activity
 
-from biosim_server.omex_sim.biosim1.biosim_service import BiosimService
 from biosim_server.dependencies import get_file_service, get_biosim_service
 from biosim_server.io.file_service import FileService
+from biosim_server.omex_sim.biosim1.biosim_service import BiosimService
 from biosim_server.omex_sim.biosim1.biosim_service_rest import BiosimServiceRest
-from biosim_server.omex_sim.biosim1.models import BiosimSimulationRunStatus, SourceOmex, BiosimSimulatorSpec, BiosimSimulationRun, \
+from biosim_server.omex_sim.biosim1.models import SourceOmex, BiosimSimulatorSpec, BiosimSimulationRun, \
     HDF5File, Hdf5DataValues
 
 
-@dataclass
-class GetSimRunInput:
+class GetSimRunInput(BaseModel):
     biosim_run_id: str
 
 
@@ -25,8 +24,7 @@ async def get_sim_run(get_sim_run_input: GetSimRunInput) -> BiosimSimulationRun:
     return biosim_sim_run
 
 
-@dataclass
-class SubmitBiosimSimInput:
+class SubmitBiosimSimInput(BaseModel):
     source_omex: SourceOmex
     simulator_spec: BiosimSimulatorSpec
 
@@ -47,29 +45,27 @@ async def submit_biosim_sim(input: SubmitBiosimSimInput) -> BiosimSimulationRun:
     return simulation_run
 
 
-@dataclass
-class GetHdf5MetadataInput:
+class GetHdf5MetadataInput(BaseModel):
     simulation_run_id: str
 
 
 @activity.defn
-async def get_hdf5_metadata(input: GetHdf5MetadataInput) -> str:
+async def get_hdf5_metadata(input: GetHdf5MetadataInput) -> HDF5File:
     activity.logger.setLevel(logging.INFO)
     biosim_service = BiosimServiceRest()
     hdf5_file: HDF5File = await biosim_service.get_hdf5_metadata(input.simulation_run_id)
-    return hdf5_file.model_dump_json()
+    return hdf5_file
 
 
-@dataclass
-class GetHdf5DataInput:
+class GetHdf5DataInput(BaseModel):
     simulation_run_id: str
     dataset_name: str
 
 
 @activity.defn
-async def get_hdf5_data(input: GetHdf5DataInput) -> Hdf5DataValues:
+async def get_hdf5_data(get_input: GetHdf5DataInput) -> Hdf5DataValues:
     activity.logger.setLevel(logging.INFO)
     biosim_service = BiosimServiceRest()
-    hdf5_data_values: Hdf5DataValues = await biosim_service.get_hdf5_data(simulation_run_id=input.simulation_run_id,
-                                                                          dataset_name=input.dataset_name)
+    hdf5_data_values: Hdf5DataValues = await biosim_service.get_hdf5_data(simulation_run_id=get_input.simulation_run_id,
+                                                                          dataset_name=get_input.dataset_name)
     return hdf5_data_values

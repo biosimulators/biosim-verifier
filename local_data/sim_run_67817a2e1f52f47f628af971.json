@@ -1,0 +1,19 @@
+{
+  "id": "67817a2e1f52f47f628af971",
+  "name": "name",
+  "simulator": "vcell",
+  "simulatorVersion": "7.7.0.13",
+  "simulatorDigest": "sha256:828b2dc2b983de901c2d68eeb415cb22b46f1db04cdb9e8815d80bf451005216",
+  "cpus": 1,
+  "memory": 8,
+  "maxTime": 600,
+  "envVars": [],
+  "purpose": "other",
+  "status": "SUCCEEDED",
+  "submitted": "2025-01-10T19:51:11.934Z",
+  "updated": "2025-01-10T19:51:41.807Z",
+  "projectSize": 283848,
+  "resultsSize": 747060,
+  "runtime": 29872,
+  "email": null
+}

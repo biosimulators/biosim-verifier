@@ -49,10 +49,6 @@ httpx = "^0.28.1"
 python_version = "3.11"
 strict = true
 
-[[tool.mypy.overrides]]
-module = "archive.*"
-ignore_errors = true
-
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "--ignore=setup.py"

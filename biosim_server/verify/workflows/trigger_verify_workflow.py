@@ -4,7 +4,7 @@ import uuid
 from temporalio.client import Client
 
 from biosim_server.omex_sim.biosim1.models import SourceOmex, BiosimSimulatorSpec
-from biosim_server.omex_verify.workflows.omex_verify_workflow import OmexVerifyWorkflow, OmexVerifyWorkflowInput
+from biosim_server.verify.workflows.omex_verify_workflow import OmexVerifyWorkflow, OmexVerifyWorkflowInput
 
 
 async def start_workflow() -> None:
@@ -14,7 +14,6 @@ async def start_workflow() -> None:
     handle = await client.start_workflow(
         OmexVerifyWorkflow.run,
         args=[OmexVerifyWorkflowInput(
-            workflow_id=workflow_id,
             source_omex=source_omex,
             user_description="description",
             requested_simulators=[BiosimSimulatorSpec(simulator="vcell", version="latest"),

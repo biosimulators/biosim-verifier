@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
-from dataclasses import dataclass
 
+from pydantic import BaseModel
 from temporalio import workflow
 
 with workflow.unsafe.imports_passed_through():
@@ -10,8 +10,7 @@ from typing import Optional
 import aiofiles
 import hashlib
 
-@dataclass
-class ListingItem:
+class ListingItem(BaseModel):
     Key: str
     LastModified: datetime
     ETag: str
